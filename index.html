@@ -15,9 +15,11 @@
     <script src="https://unpkg.com/vue@3"></script>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Georgia&display=swap');
+
       .georgia {
         font-family: 'Georgia', serif;
       }
+
       .card {
         transition: transform 0.8s ease;
       }
@@ -25,53 +27,47 @@
   </head>
   <body class="h-screen w-screen overflow-hidden">
     <div id="app" class="relative h-full w-full overflow-hidden">
-      <div
-        v-for="(card, i) in visibleCards"
-        :key="card.sp + i"
-        class="h-full w-full flex flex-col absolute top-0 left-0 card"
-        :style="{
+      <div v-for="(card, i) in visibleCards" :key="card.sp + i" class="h-full w-full flex flex-col absolute top-0 left-0 card" :style="{
           transform: `translateY(${positions[i]}%)`,
           zIndex: i === 0 ? 1 : 0
-        }"
-      >
+        }">
         <!-- Top Section -->
         <div :class="['relative bg-[#1C1616] text-[#FEE494] georgia flex items-end justify-center px-4 text-center flex-grow']" @click="toggleSpMute">
-            <div v-if="spMuted" class="absolute inset-0 flex items-center justify-center">
-              <img src="speaker.svg"/>
-            </div>
+          <div v-if="spMuted" class="absolute inset-0 flex items-center justify-center">
+            <img src="speaker.svg" />
+          </div>
           <div class="relative w-full">
             <p class="text-[2rem] font-medium leading-tight mb-4" :class="{ 'invisible': spMuted }">
               {{ card.sp }}
             </p>
           </div>
-          
-        
-
-      </div>
-      <!-- Center Section (Always Square) -->
-        <div class="bg-orange-400 flex items-center justify-center aspect-square w-full max-w-screen-sm mx-auto relative" @click="start">
+        </div>
+        <!-- Center Section (Always Square) -->
+        <div class="bg-orange-400 flex items-center justify-center aspect-square w-full max-w-screen-sm mx-auto relative" @click="togglePause">
           <img src="mock.png" alt="illustration" class="w-full h-full object-cover" />
-          <div v-if="!started || paused" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 z-10">
-            <img src="play.svg"/>
+          <div v-if="paused" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 z-10">
+            <img src="play.svg" />
           </div>
         </div>
-
         <!-- Bottom Section -->
         <div :class="['relative bg-[#1C1616] text-[#FEE494] georgia flex items-start justify-center px-4 text-center flex-grow']" @click="toggleRuMute">
           <div v-if="ruMuted" class="absolute inset-0 flex items-center justify-center">
-              <img src="speaker.svg"/>
+            <img src="speaker.svg" />
           </div>
           <div class="relative w-full">
             <p class="text-[2rem] font-medium leading-tight mt-4" :class="{ 'invisible': ruMuted }">
               {{ card.ru }}
             </p>
           </div>
+        </div>
       </div>
     </div>
-  </div>
     <script>
-      const { createApp, ref, onMounted } = Vue;
-
+      const {
+        createApp,
+        ref,
+        onMounted
+      } = Vue;
       createApp({
         setup() {
           const cards = ref([]);
@@ -79,10 +75,12 @@
           const next = ref(1);
           const visibleCards = ref([{}, {}]);
           const positions = ref([0, 100]);
-          const started = ref(false);
-          const paused = ref(false);
+          const paused = ref(true);
           const spMuted = ref(false);
           const ruMuted = ref(false);
+          
+          const audio1 = new Audio();
+          const audio2 = new Audio();
 
           const nextCard = async () => {
             if (cards.value.length < 2) return;
@@ -94,30 +92,32 @@
             visibleCards.value[1] = cards.value[next.value] || {};
             positions.value = [0, 100];
           };
-
-          const toggleSpMute = () => { spMuted.value = !spMuted.value; };
-          const toggleRuMute = () => { ruMuted.value = !ruMuted.value; };
-
+          const toggleSpMute = () => {
+            spMuted.value = !spMuted.value;
+          };
+          const toggleRuMute = () => {
+            ruMuted.value = !ruMuted.value;
+          };
           const playAudio = async () => {
             if (paused.value || cards.value.length === 0) {
               return;
             }
-
             const currentCard = cards.value[current.value];
             console.log('🔊 Current card:', currentCard);
-
             if (!currentCard?.sp_sound || !currentCard?.ru_sound) {
               console.warn('⚠️ Missing audio paths');
               nextCard();
               setTimeout(playAudio, 6000);
               return;
             }
-
-            const audio1 = new Audio(currentCard.sp_sound);
+            audio1.src = currentCard.sp_sound;
+            audio1.load();
             audio1.volume = spMuted.value ? 0 : 0.8;
-            const audio2 = new Audio(currentCard.ru_sound);
-            audio2.volume = ruMuted.value ? 0 : 0.8;
 
+            audio2.src = currentCard.ru_sound;
+            audio2.load();
+            audio2.volume = ruMuted.value ? 0 : 0.8;
+            
             try {
               await audio1.play();
               await new Promise(resolve => audio1.onended = resolve);
@@ -133,37 +133,42 @@
               setTimeout(playAudio, 6000);
             }
           };
-
-          const start = () => {
-            if (started.value) {
-              paused.value = !paused.value;
-              if (!paused.value) playAudio();
-              return;
+          const togglePause = () => {
+            paused.value = !paused.value;
+            if (!paused.value) {
+              playAudio();
+            } else {
+              console.log('pause')
+              audio1.pause();
+              audio2.pause();
             }
-            started.value = true;
-            playAudio();
           };
-
           onMounted(() => {
-            fetch('phrases.json')
-              .then(res => {
-                console.log('✅ Loaded phrases.json');
-                return res.json();
-              })
-              .then(data => {
-                console.log('✅ Parsed phrases:', data);
-                cards.value = data;
-                visibleCards.value = [
-                  cards.value[current.value] || {},
-                  cards.value[next.value] || {}
-                ];
-              })
-              .catch(err => {
-                console.error('Error loading phrases:', err);
-              });
+            fetch('phrases.json').then(res => {
+              console.log('✅ Loaded phrases.json');
+              return res.json();
+            }).then(data => {
+              console.log('✅ Parsed phrases:', data);
+              cards.value = data;
+              visibleCards.value = [
+                cards.value[current.value] || {},
+                cards.value[next.value] || {}
+              ];
+            }).catch(err => {
+              console.error('Error loading phrases:', err);
+            });
           });
-
-          return { visibleCards, positions, cards, start, spMuted, ruMuted, toggleSpMute, toggleRuMute, started, paused };
+          return {
+            visibleCards,
+            positions,
+            cards,
+            spMuted,
+            ruMuted,
+            toggleSpMute,
+            toggleRuMute,
+            paused,
+            togglePause,
+          };
         }
       }).mount('#app');
     </script>
