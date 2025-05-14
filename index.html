@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Language Card Layout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Georgia&display=swap');
+      .georgia {
+        font-family: 'Georgia', serif;
+      }
+      .card {
+        transition: transform 0.8s ease;
+      }
+    </style>
+  </head>
+  <body class="h-screen w-screen overflow-hidden">
+    <div id="app" class="relative h-full w-full overflow-hidden">
+      <div
+        v-for="(card, i) in visibleCards"
+        :key="card.sp + i"
+        class="h-full w-full flex flex-col absolute top-0 left-0 card"
+        :style="{
+          transform: `translateY(${positions[i]}%)`,
+          zIndex: i === 0 ? 1 : 0
+        }"
+      >
+        <!-- Top Section -->
+        <div :class="['relative bg-[#1C1616] text-[#FEE494] georgia flex items-end justify-center px-4 text-center flex-grow']" @click="toggleSpMute">
+            <div v-if="spMuted" class="absolute inset-0 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="#FEE494" width="64" height="64" viewBox="0 0 240.887 240.887">
+                <g>
+                  <path d="M185.765,79.024c-3.515-3.515-9.212-3.515-12.729,0c-3.515,3.515-3.515,9.213,0,12.728c15.82,15.821,15.82,41.563,0,57.384 c-3.515,3.515-3.515,9.213,0,12.728c1.758,1.757,4.061,2.636,6.364,2.636s4.606-0.879,6.364-2.636 C208.603,139.024,208.603,101.863,185.765,79.024z"/>
+                  <path d="M212.643,52.146c-3.515-3.515-9.212-3.516-12.729,0c-3.515,3.515-3.515,9.213,0,12.728 c30.642,30.642,30.642,80.499,0,111.141c-3.515,3.515-3.515,9.213,0,12.728c1.758,1.758,4.061,2.636,6.364,2.636 s4.606-0.879,6.364-2.636C250.302,151.082,250.302,89.805,212.643,52.146z"/>
+                  <path d="M156.646,108.318c-0.331,0-0.657,0.021-0.979,0.055V40.586c0-4.971-4.029-9-9-9c-32.458,0-60.52,19.134-73.531,46.708 c-0.243-0.02-0.487-0.037-0.735-0.037H9c-4.971,0-9,4.029-9,9v66.374c0,4.971,4.029,9,9,9h63.399c0.248,0,0.492-0.017,0.735-0.037 c13.012,27.574,41.074,46.708,73.531,46.708c4.971,0,9-4.029,9-9v-67.789c0.322,0.035,0.648,0.055,0.979,0.055c4.971,0,9-4.029,9-9 v-6.25C165.646,112.348,161.616,108.318,156.646,108.318z M18,144.63V96.256h49.109c-1.117,5.36-1.709,10.91-1.709,16.596v15.182 c0,5.686,0.593,11.236,1.709,16.596H18z M83.399,128.034v-15.182c0-31.83,23.63-58.232,54.267-62.616V190.65 C107.029,186.267,83.399,159.864,83.399,128.034z"/>
+                </g>
+              </svg>
+            </div>
+          <div class="relative w-full">
+            <p class="text-[2rem] font-medium leading-tight mb-4" :class="{ 'invisible': spMuted }">
+              {{ card.sp }}
+            </p>
+          </div>
+          
+        
+
+      </div>
+      <!-- Center Section (Always Square) -->
+        <div class="bg-orange-400 flex items-center justify-center aspect-square w-full max-w-screen-sm mx-auto relative" @click="start">
+          <img src="mock.png" alt="illustration" class="w-full h-full object-cover" />
+          <div v-if="!started || paused" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 z-10">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="#FEE494" width="64" height="64" viewBox="0 0 155.908 155.908">
+              <path d="M143.878,58.015L46.02,6.45c-9.816-5.172-21.348-4.838-30.848,0.894C5.672,13.076,0,23.122,0,34.218v87.473
+                c0,11.096,5.672,21.142,15.172,26.874c5.018,3.028,10.601,4.549,16.2,4.549c5.001,0,10.016-1.215,14.647-3.655l97.858-51.566
+                c7.42-3.91,12.03-11.55,12.03-19.938S151.298,61.926,143.878,58.015z M135.486,81.968l-97.858,51.566
+                c-4.249,2.239-9.045,2.101-13.157-0.381C20.358,130.671,18,126.493,18,121.69V34.218c0-4.803,2.358-8.981,6.471-11.462
+                c2.169-1.309,4.529-1.966,6.898-1.966c2.122,0,4.251,0.527,6.259,1.585l97.858,51.565c2.186,1.152,2.422,3.191,2.422,4.014
+                S137.672,80.816,135.486,81.968z"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Bottom Section -->
+        <div :class="['relative bg-[#1C1616] text-[#FEE494] georgia flex items-start justify-center px-4 text-center flex-grow']" @click="toggleRuMute">
+          <div v-if="ruMuted" class="absolute inset-0 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="#FEE494" width="64" height="64" viewBox="0 0 240.887 240.887">
+              <path d="M185.765,79.024c-3.515-3.515-9.212-3.515-12.729,0c-3.515,3.515-3.515,9.213,0,12.728c15.82,15.821,15.82,41.563,0,57.384 c-3.515,3.515-3.515,9.213,0,12.728c1.758,1.757,4.061,2.636,6.364,2.636s4.606-0.879,6.364-2.636 C208.603,139.024,208.603,101.863,185.765,79.024z"/>
+              <path d="M212.643,52.146c-3.515-3.515-9.212-3.516-12.729,0c-3.515,3.515-3.515,9.213,0,12.728 c30.642,30.642,30.642,80.499,0,111.141c-3.515,3.515-3.515,9.213,0,12.728c1.758,1.758,4.061,2.636,6.364,2.636 s4.606-0.879,6.364-2.636C250.302,151.082,250.302,89.805,212.643,52.146z"/>
+              <path d="M156.646,108.318c-0.331,0-0.657,0.021-0.979,0.055V40.586c0-4.971-4.029-9-9-9c-32.458,0-60.52,19.134-73.531,46.708 c-0.243-0.02-0.487-0.037-0.735-0.037H9c-4.971,0-9,4.029-9,9v66.374c0,4.971,4.029,9,9,9h63.399c0.248,0,0.492-0.017,0.735-0.037 c13.012,27.574,41.074,46.708,73.531,46.708c4.971,0,9-4.029,9-9v-67.789c0.322,0.035,0.648,0.055,0.979,0.055c4.971,0,9-4.029,9-9 v-6.25C165.646,112.348,161.616,108.318,156.646,108.318z M18,144.63V96.256h49.109c-1.117,5.36-1.709,10.91-1.709,16.596v15.182 c0,5.686,0.593,11.236,1.709,16.596H18z M83.399,128.034v-15.182c0-31.83,23.63-58.232,54.267-62.616V190.65 C107.029,186.267,83.399,159.864,83.399,128.034z"/>
+            </svg>
+          </div>
+          <div class="relative w-full">
+            <p class="text-[2rem] font-medium leading-tight mt-4" :class="{ 'invisible': ruMuted }">
+              {{ card.ru }}
+            </p>
+          </div>
+      </div>
+    </div>
+
+    <script>
+      const { createApp, ref, onMounted } = Vue;
+
+      createApp({
+        setup() {
+          const cards = ref([]);
+          const current = ref(0);
+          const next = ref(1);
+          const visibleCards = ref([{}, {}]);
+          const positions = ref([0, 100]);
+          const started = ref(false);
+          const paused = ref(false);
+          const spMuted = ref(false);
+          const ruMuted = ref(false);
+
+          const nextCard = async () => {
+            if (cards.value.length < 2) return;
+            positions.value = [-100, 0];
+            await new Promise(resolve => setTimeout(resolve, 800));
+            current.value = (current.value + 1) % cards.value.length;
+            next.value = (current.value + 1) % cards.value.length;
+            visibleCards.value[0] = cards.value[current.value] || {};
+            visibleCards.value[1] = cards.value[next.value] || {};
+            positions.value = [0, 100];
+          };
+
+          const toggleSpMute = () => { spMuted.value = !spMuted.value; };
+          const toggleRuMute = () => { ruMuted.value = !ruMuted.value; };
+
+          const playAudio = async () => {
+            if (paused.value || cards.value.length === 0) {
+              return;
+            }
+
+            const currentCard = cards.value[current.value];
+            console.log('🔊 Current card:', currentCard);
+
+            if (!currentCard?.sp_sound || !currentCard?.ru_sound) {
+              console.warn('⚠️ Missing audio paths');
+              nextCard();
+              setTimeout(playAudio, 6000);
+              return;
+            }
+
+            const audio1 = new Audio(currentCard.sp_sound);
+            audio1.volume = spMuted.value ? 0 : 0.8;
+            const audio2 = new Audio(currentCard.ru_sound);
+            audio2.volume = ruMuted.value ? 0 : 0.8;
+
+            try {
+              await audio1.play();
+              await new Promise(resolve => audio1.onended = resolve);
+              await new Promise(r => setTimeout(r, 1000));
+              await audio2.play();
+              await new Promise(resolve => audio2.onended = resolve);
+              await new Promise(r => setTimeout(r, 2000));
+              await nextCard();
+              setTimeout(playAudio, 100);
+            } catch (err) {
+              console.error('Error playing audio:', err);
+              nextCard();
+              setTimeout(playAudio, 6000);
+            }
+          };
+
+          const start = () => {
+            if (started.value) {
+              paused.value = !paused.value;
+              if (!paused.value) playAudio();
+              return;
+            }
+            started.value = true;
+            playAudio();
+          };
+
+          onMounted(() => {
+            fetch('phrases.json')
+              .then(res => {
+                console.log('✅ Loaded phrases.json');
+                return res.json();
+              })
+              .then(data => {
+                console.log('✅ Parsed phrases:', data);
+                cards.value = data;
+                visibleCards.value = [
+                  cards.value[current.value] || {},
+                  cards.value[next.value] || {}
+                ];
+              })
+              .catch(err => {
+                console.error('Error loading phrases:', err);
+              });
+          });
+
+          return { visibleCards, positions, cards, start, spMuted, ruMuted, toggleSpMute, toggleRuMute, started, paused };
+        }
+      }).mount('#app');
+    </script>
+  </body>
+</html>

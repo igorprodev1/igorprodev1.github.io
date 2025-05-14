@@ -1,0 +1,112 @@
+[
+   {
+      "sp":"¿Qué opinas?",
+      "en":"What do you think?",
+      "ua":"Що ти думаєш?",
+      "ru":"Что ты думаешь?",
+      "img":null,
+      "sp_sound":"sp_what_do_you_think.mp3",
+      "en_sound":null,
+      "ua_sound":null,
+      "ru_sound":"ru_what_do_you_think.mp3"
+   },
+   {
+      "sp":"No importa.",
+      "en":"It doesn't matter.",
+      "ua":"Неважливо.",
+      "ru":"Неважно.",
+      "img":null,
+      "sp_sound":"sp_it_doesnt_matter.mp3",
+      "en_sound":null,
+      "ua_sound":null,
+      "ru_sound":"ru_it_doesnt_matter.mp3"
+   },
+   {
+      "sp":"Por supuesto.",
+      "en":"Of course.",
+      "ua":"Звичайно.",
+      "ru":"Конечно.",
+      "img":null,
+      "sp_sound":"sp_of_course.mp3",
+      "en_sound":null,
+      "ua_sound":null,
+      "ru_sound":"ru_of_course.mp3"
+   },
+   {
+      "sp":"Tal vez.",
+      "en":"Maybe.",
+      "ua":"Можливо.",
+      "ru":"Может быть.",
+      "img":null,
+      "sp_sound":"sp_maybe.mp3",
+      "en_sound":null,
+      "ua_sound":null,
+      "ru_sound":"ru_maybe.mp3"
+   },
+   {
+      "sp":"Nunca.",
+      "en":"Never.",
+      "ua":"Ніколи.",
+      "ru":"Никогда.",
+      "img":null,
+      "sp_sound":"sp_never.mp3",
+      "en_sound":null,
+      "ua_sound":null,
+      "ru_sound":"ru_never.mp3"
+   },
+   {
+      "sp":"Siempre.",
+      "en":"Always.",
+      "ua":"Завжди.",
+      "ru":"Всегда.",
+      "img":null,
+      "sp_sound":"sp_always.mp3",
+      "en_sound":null,
+      "ua_sound":null,
+      "ru_sound":"ru_always.mp3"
+   },
+   {
+      "sp":"A veces.",
+      "en":"Sometimes.",
+      "ua":"Іноді.",
+      "ru":"Иногда.",
+      "img":null,
+      "sp_sound":"sp_sometimes.mp3",
+      "en_sound":null,
+      "ua_sound":null,
+      "ru_sound":"ru_sometimes.mp3"
+   },
+   {
+      "sp":"Hoy.",
+      "en":"Today.",
+      "ua":"Сьогодні.",
+      "ru":"Сегодня.",
+      "img":null,
+      "sp_sound":"sp_today.mp3",
+      "en_sound":null,
+      "ua_sound":null,
+      "ru_sound":"ru_today.mp3"
+   },
+   {
+      "sp":"Mañana.",
+      "en":"Tomorrow.",
+      "ua":"Завтра.",
+      "ru":"Завтра.",
+      "img":null,
+      "sp_sound":"sp_tomorrow.mp3",
+      "en_sound":null,
+      "ua_sound":null,
+      "ru_sound":"ru_tomorrow.mp3"
+   },
+   {
+      "sp":"Ayer.",
+      "en":"Yesterday.",
+      "ua":"Вчора.",
+      "ru":"Вчера.",
+      "img":null,
+      "sp_sound":"sp_yesterday.mp3",
+      "en_sound":null,
+      "ua_sound":null,
+      "ru_sound":"ru_yesterday.mp3"
+   }
+]
